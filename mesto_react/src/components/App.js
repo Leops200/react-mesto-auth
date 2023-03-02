@@ -1,38 +1,36 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Footer from './Footer';
+import Header from './Header';
+import Main from './Main';
 
 function App() {
+
+const closePopupProfile = () => {
+    console.log('closePopup');
+    document.querySelector('.popup_profile').classList.remove('popup_opened');
+}
+
+const closePopupCard = () => {
+    console.log('closePopup');
+    document.querySelector('.popup_new-card').classList.remove('popup_opened');
+}
+
+const closePopupAvatar = () => {
+    console.log('closePopup');
+    document.querySelector('.popup_avatar').classList.remove('popup_opened');
+}
+
   return (
-    <div className="App">
-      <header className="header">
-            <div className="logo"></div>
-        </header>
-        <main className="content page__content">
-
-            <section className="profile content__section">
-                <div className="profile__box">
-                    <div className="profile__avatar-box">
-                        <img src="<%=require('./images/mesto_logo.png')%>" className="profile__avatar" alt="Аватарка"/>
-                        <button className="profile__avatar-btn"></button>
-                    </div>
-                        <div className="profile__user-box">
-                        <h1 className="profile__user-name">Жак-Ив Кусто</h1>
-                        <button className="button profile__edit-btn" type="button"></button>
-                            <p className="profile__user-activity">Исследователь океана</p>
-                        </div>
-                    <button className="button profile__add-btn" type="button"></button>
-                </div>
-            </section>
-
-            <section className="elements content__section" aria-label="Фотогалерея"></section>
-        </main>
-        <footer className="footer">
-            <p className="footer__copyright">&#xA9; 2022 Mesto Russia</p>
-        </footer>
+    <div className="App page" >
+      <Header/>
+      <Main/>
+      <Footer/>
         <div className="popup popup_profile" id="popup__profile">
             <div className="popup__container">
                 <h2 className="popup__title">Редактировать профиль</h2>
-                <button className="button popup__close-btn popup__close-btn_profile" type="button"></button>
+                <button onClick = {closePopupProfile}
+                className="button popup__close-btn popup__close-btn_profile" type="button"></button>
                 <form
                     className="popup__form popup__form-edit"
                     novalidate
@@ -71,7 +69,8 @@ function App() {
         <section className="popup popup_new-card" id="new__card">
             <div className="popup__container">
                 <h2 className="popup__title popup__title-new-card">Новое место</h2>
-                <button className="button popup__close-btn popup__close-btn_card" type="button"></button>
+                <button onClick = {closePopupCard}
+                 className="button popup__close-btn popup__close-btn_card" type="button"></button>
                 <form
                     className="popup__form popup__form-new-card"
                     id="new-card"
@@ -113,15 +112,6 @@ function App() {
                 </div>
             </div>
         </div>
-        <div className="popup popup_zoom">
-            <div className="popup__container-zoom">
-                <button className="button popup__close-btn popup__close-btn_zoom" type="button"></button>
-                <div className="popup__zoom-vis">
-                    <img className="popup__img" src="#" alt="#"/>
-                    <h2 className="popup__img-title">Название места</h2>
-                </div>
-            </div>
-        </div>
         <div className="popup popup_accept">
             <div className="popup__container">
                 <button className="button popup__close-btn popup__close-btn_accept"></button>
@@ -138,7 +128,8 @@ function App() {
         <div className="popup popup_avatar" id="popup__avatar">
             <div className="popup__container">
                 <h2 className="popup__title">Обновить аватар</h2>
-                <button className="button popup__close-btn popup__close-btn_avatar" type="button"></button>
+                <button onClick = {closePopupAvatar}
+                 className="button popup__close-btn popup__close-btn_avatar" type="button"></button>
                 <form
                     className="popup__form popup__form-avatar"
                     novalidate
