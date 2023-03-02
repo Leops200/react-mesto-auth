@@ -1,23 +1,22 @@
 import React from "react";
 
 
-function Main() {
+function Main({onEditAvatar, onEditProfile, onAddPlace}) {
 
-
-    const openPopupProfile = () => {
+    /*const onEditProfile = () => {
         document.querySelector('.popup_profile').classList.add('popup_opened');
         console.log('clickEditProfile!');
     };
 
-    const openPopupAvatar = () => {
+    const onEditAvatar = () => {
         document.querySelector('.popup_avatar').classList.add('popup_opened');
         console.log('clickAvatarBTN!');
     };
 
-    const openPopupNewCard = () => {
+    const onAddPlace = () => {
         document.querySelector('.popup_new-card').classList.add('popup_opened');
         console.log('clicNewCardBTN!');
-    }
+    }*/
 
   return(
     <main className="content page__content">
@@ -25,16 +24,16 @@ function Main() {
                 <div className="profile__box">
                     <div className="profile__avatar-box">
                         <img src="<%=require('./images/mesto_logo.png')%>" className="profile__avatar" alt="Аватарка"/>
-                        <button onClick = {openPopupAvatar}className="profile__avatar-btn">
+                        <button onClick = {onEditAvatar}className="profile__avatar-btn">
                         </button>
                     </div>
                         <div className="profile__user-box">
                         <h1 className="profile__user-name">Жак-Ив Кусто</h1>
-                        <button onClick = {openPopupProfile}
+                        <button onClick = {onEditProfile}
                         className="button profile__edit-btn" type="button"></button>
                             <p className="profile__user-activity">Исследователь океана</p>
                         </div>
-                    <button onClick = {openPopupNewCard}
+                    <button onClick = {onAddPlace}
                     className="button profile__add-btn" type="button"></button>
                 </div>
             </section>
