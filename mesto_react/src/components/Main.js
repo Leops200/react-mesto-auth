@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import api from "../utils/Api.js";
+import api from "../utils/api.js";
 import Card from "./Card.js";
 
-function Main({onEditAvatar, onEditProfile, onAddPlace}) {
+function Main({onCardClick, onEditAvatar, onEditProfile, onAddPlace}) {
     const[avatar, setAvatar] = useState("");
     const[userName, setUserName] = useState("");
     const[userActivity, setUserActivity] = useState("");
@@ -42,6 +42,7 @@ useEffect(() => {
               {cards.map((card) => {
                 return(
                   <Card
+                    onCardClick={onCardClick}
                     card={card}
                     name={card.name}
                     link={card.link}
