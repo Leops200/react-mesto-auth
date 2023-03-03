@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../utils/Api.js";
+import Card from "./Card.js";
 
 function Main({onEditAvatar, onEditProfile, onAddPlace}) {
     const[avatar, setAvatar] = useState("");
@@ -37,7 +38,18 @@ useEffect(() => {
                     className="button profile__add-btn" type="button"></button>
                 </div>
             </section>
-            <section className="elements content__section" aria-label="Фотогалерея"></section>
+            <section className="elements content__section" aria-label="Фотогалерея">
+              {cards.map((card) => {
+                return(
+                  <Card
+                    card={card}
+                    name={card.name}
+                    link={card.link}
+                    rey={card._id}
+                  />
+                );
+              })}
+            </section>
     </main>
   )
 };

@@ -63,7 +63,9 @@
 @import url(./blocks/popup/__form-btn-save/_dsbl/popup__form-btn-save_dsbl.css);
 @import url(./blocks/popup/__close-btn/popup__close-btn.css);
 
-
+body{
+  background-color: blue;
+}
 
 /*body {
   margin: 0;
