@@ -13,8 +13,6 @@ function PopupNewCardAdd({isOpen, onClose}){
       type="text"
       id="place-name"
       placeholder="Название"
-      minlength="2"
-      maxlength="30"
       name="name"
       required
       />

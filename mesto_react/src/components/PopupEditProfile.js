@@ -10,8 +10,6 @@ function PopupEditProfile({isOpen, onClose}) {
       type="text"
       name="name"
       placeholder="Ваше имя"
-      minlength="2"
-      maxlength="40"
       required/>
       <span className="name-input-error popup__form-inpt-err name-inpt-err"
       id="name-error"></span>
@@ -21,8 +19,7 @@ function PopupEditProfile({isOpen, onClose}) {
       type="text"
       name="about"
       placeholder="О себе"
-      minlength="2"
-      maxlength="200"
+
       required/>
       <span className="popup__form-inpt-err about-input-error"
       id="about-error"></span>

@@ -15,8 +15,6 @@ function PopupChangeAvatar({isOpen, onClose}) {
         name="avatar"
         placeholder="Ссылка на картинку"
         id="avatar"
-        minlength="2"
-        maxlength="300"
         required
         />
         <span className="popup__form-inpt-err avatar-error"

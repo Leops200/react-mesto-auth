@@ -64,7 +64,7 @@
 @import url(./blocks/popup/__close-btn/popup__close-btn.css);
 
 body{
-  background-color: blue;
+  background-color: #000;
 }
 
 /*body {
