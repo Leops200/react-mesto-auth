@@ -7,7 +7,7 @@ function Card({card, onCardClick}) {
   }
 
   return(
-    <div id="card-template">
+    <div className="card-template">
       <li className="card">
         <button className="button card__del-btn" type="button"></button>
         <img src={card.link} alt={card.name} className="card__image"
