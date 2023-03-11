@@ -7,19 +7,17 @@ function Card({card, onCardClick}) {
   }
 
   return(
-    <div className="card-template">
-      <li className="card">
-        <button className="button card__del-btn" type="button"></button>
-        <img src={card.link} alt={card.name} className="card__image"
-        onClick={handleClick}/>
-        <div className="card__about">
-          <h2 className="card__title">{card.name}</h2>
-          <div className="card__like">
-            <button className="button card__like-btn" type="button"></button>
-            <span className="card__like-count">{card.likes.length}</span>
-          </div>
+    <div className="card card-template">
+      <button className="button card__del-btn" type="button"></button>
+      <img src={card.link} alt={card.name} className="card__image"
+      onClick={handleClick}/>
+      <div className="card__about">
+        <h2 className="card__title">{card.name}</h2>
+        <div className="card__like">
+          <button className="button card__like-btn" type="button"></button>
+          <span className="card__like-count">{card.likes.length}</span>
         </div>
-      </li>
+      </div>
     </div>
   )
 };

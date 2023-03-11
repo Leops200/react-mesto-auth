@@ -1,3 +1,10 @@
+/*
+Здравствуйте, Владислав. Спасибо Вам за ревью, и особенно за замечания. Вообще спасибо за Ваш труд, без него сложно чему-либо научиться. 
+Я постарался исправить Ваши замечания так, чтобы не наделать новых ошибок. Проверьте меня, пожалуйста, ещё раз.
+  Выкладывать на GH Pages пока не буду(если можно), работа пока ещё не закончена и взаимодействовать с ней в таком виде, как сейчас - почти невозможно.
+  Но за ссылочку спасибо, я себе её сохранил, как только работа будет доделана - обязательно воспользуюсь и выложу.
+*/
+
 import React from 'react';
 import Footer from './Footer.js';
 import Header from './Header.js';
@@ -13,12 +20,12 @@ function App() {
     const[isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
     const[createCard, setCreateCard] = React.useState({});
 
-    const handleEditProfileClick = () => {setIsEditProfilePopupOpen("popup_opened");};
+    const handleEditProfileClick = () => {setIsEditProfilePopupOpen(true);};
 
-    const handleAddPlaceClick = () => {setIsAddPlacePopupOpen("popup_opened");};
+    const handleAddPlaceClick = () => {setIsAddPlacePopupOpen(true);};
 
     const handleEditAvatarClick = () => {
-        setIsEditAvatarPopupOpen("popup_opened");
+        setIsEditAvatarPopupOpen(true);
       };
 
       const handleCardClick = (card) => {

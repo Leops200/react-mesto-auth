@@ -3,7 +3,12 @@ import PopupWithForm from './PopupWithForm.js';
 
 function PopupEditProfile({isOpen, onClose}) {
   return(
-    <PopupWithForm isOpen={isOpen} onClose={onClose} name='edit' title='Редактировать профиль' buttonText='Сохранить'>
+    <PopupWithForm
+    isOpen={isOpen}
+    onClose={onClose}
+    name='edit'
+    title='Редактировать профиль'
+    buttonText='Сохранить'>
       <input
       className="popup__form-input popup__form-input_other-name"
       id="name-input"
