@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Footer from './Footer.js';
 import Header from './Header.js';
 import Main from './Main.js';
