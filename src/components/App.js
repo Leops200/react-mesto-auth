@@ -16,6 +16,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isEditProfilePopupChanging, setIsEditProfilePopupChanging] = useState(false);
+  const [isEditAvatarPopupChanging, setIsEditAvatarPopupChanging] = useState(false);
 
     const[isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const[isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -60,14 +61,23 @@ function App() {
     };
 
   //Обновляем информацию пользователя
-    const upDateUserInfo = (data) => {
+    const updateUserInfo = (data) => {
       setIsEditProfilePopupChanging(true);
       api.addInfo(data)
-      .then((newData) => {setCurrentUser(newData);})
-      .then(() => {closePopups();})
-      .catch((err) => {console.log(err);})
-      .finally(() => {setIsEditProfilePopupChanging(false);})
-    }
+        .then((newData) => {setCurrentUser(newData);})
+        .then(() => {closePopups();})
+        .catch((err) => {console.log(err);})
+        .finally(() => {setIsEditProfilePopupChanging(false);})
+    };
+  //Обновляем аватарку
+    const updateAvatar = (data) => {
+      setIsEditAvatarPopupChanging(true);
+      api.addAvatar(data)
+        .then((newData) => {setCurrentUser(newData);})
+        .then(() => {closePopups();})
+        .catch((err) => {console.log(err);})
+        .finally(() => {setIsEditAvatarPopupChanging(false);})
+    };
 
 // закрываем попапы
 const closePopups = () => {
@@ -95,15 +105,17 @@ return (
       <PopupEditProfile
       isOpen={isEditProfilePopupOpen}
       onClose={closePopups}
-      onSaveing={isEditProfilePopupChanging}
-      onUseUpdates={upDateUserInfo}/>
+      onSaving={isEditProfilePopupChanging}
+      onUseUpdates={updateUserInfo}/>
       <PopupNewCardAdd
       isOpen={isAddPlacePopupOpen}
       onClose={closePopups}/>
       <ImagePopup card={createCard} onClose={closePopups}/>
         <PopupChangeAvatar
         isOpen={isEditAvatarPopupOpen}
-        onClose={closePopups}/>
+        onClose={closePopups}
+        onSaving={isEditAvatarPopupChanging}
+        onAvatarUpdates={updateAvatar}/>
     </div>
   </CurrentUserContext.Provider>
 );

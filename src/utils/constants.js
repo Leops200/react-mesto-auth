@@ -1,4 +1,4 @@
-
+//https://iphone-image.apkpure.com/v2/app/d/f/d/dfde02292072ff8a42cbcc754dde7f09.jpg
 // Делаем выборку ДОМ элементов:
 //  Глобальные переменные:
 //  для работы с попАп:
