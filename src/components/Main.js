@@ -13,7 +13,7 @@ function Main({cards, onCardClick, onEditAvatar, onEditProfile, onAddPlace, onCa
     const[userActivity, setUserActivity] = useState("");
     const[cards, setCards] = useState([]);
     */
-/*
+/*  // переносим в Арр и модифицируем под контекст
     useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitCards()])
       .then(([userData, cardsData]) => {

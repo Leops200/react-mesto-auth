@@ -40,9 +40,16 @@ function App() {
         setIsEditAvatarPopupOpen(true);
       };
 
-      const handleCardClick = (card) => {
-        setCreateCard(card);
-      };
+    const handleCardClick = (card) => {
+      setCreateCard(card);
+    };
+
+    function handleCardLike(card) {
+      const isLiked = card.likes.some((i) => i._id === currentUser._id);
+      api.changeLikeStatus(card._id, !isLiked).then((newCard) => {
+        setCards((state) => state.map((i) => (i._id === card._id ? newCard : i)));
+      });
+    }
 
 const closePopups = () => {
     console.log('closePopups');
@@ -62,6 +69,7 @@ return (
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
         onCardClick={handleCardClick}
+        onCardLike = {handleCardLike}
       />
       <Footer/>
       <PopupEditProfile

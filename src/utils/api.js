@@ -71,7 +71,7 @@ _refund(url, options) {
       headers: this._headers
     })
   };
-
+/*
   addCardLike(cardId) {
     return this._refund(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "PUT",
@@ -84,6 +84,21 @@ _refund(url, options) {
       method: "DELETE",
       headers: this._headers
     })
+  };
+*/
+  // объединим функции добавления и удаления лайка (addCardLike, deleteCardLike)
+  changeLikeStatus(id, isLiked) {
+    if (isLiked) {
+      return this._refund(`${this._baseUrl}/cards/${id}/likes`, {
+        headers: this._headers,
+          method: "PUT",
+      });
+    } else {
+      return this._refund(`${this._baseUrl}/cards/${id}/likes`, {
+        headers: this._headers,
+        method: "DELETE",
+      });
+    }
   };
 }
 
