@@ -1,6 +1,10 @@
-import React from "react";
+import {useContext} from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function Card({card, onCardClick}) {
+
+  const currentUser = useContext(CurrentUserContext);
+  const isOwn = card.owner._id === currentUser._id;
 
   function handleClick() {
     onCardClick(card);
@@ -8,7 +12,11 @@ function Card({card, onCardClick}) {
 
   return(
     <div className="card card-template">
-      <button className="button card__del-btn" type="button"></button>
+      <div>
+        {isOwn && (
+          <button className="button card__del-btn" type="button"></button>
+        )}
+      </div>
       <img src={card.link} alt={card.name} className="card__image"
       onClick={handleClick}/>
       <div className="card__about">

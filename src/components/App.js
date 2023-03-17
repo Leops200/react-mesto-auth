@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
 import Footer from './Footer.js';
 import Header from './Header.js';
 import Main from './Main.js';
@@ -9,11 +9,28 @@ import PopupChangeAvatar from './PopupChangeAvatar.js';
 import PopupNewCardAdd from './PopupNewCardAdd.js';
 import ImagePopup from './ImagePopup.js';
 
+import {CurrentUserContext} from '../contexts/CurrentUserContext';
+import api from '../utils/api.js';
+
 function App() {
-    const[isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-    const[isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-    const[isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-    const[createCard, setCreateCard] = React.useState({});
+  const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
+
+    const[isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+    const[isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+    const[isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+    const[createCard, setCreateCard] = useState({});
+
+    useEffect(() => {
+      Promise.all([api.getUserInfo(), api.getInitCards()])
+        .then(([userData, cardsData]) => {
+          setCurrentUser(userData);
+          //setUserName(userData.name);
+          //setUserActivity(userData.about);
+          setCards(cardsData);
+        })
+        .catch((err) => {console.log(err);});
+  },[]);
 
     const handleEditProfileClick = () => {setIsEditProfilePopupOpen(true);};
 
@@ -35,10 +52,12 @@ const closePopups = () => {
     setCreateCard({});
 }
 
-  return (
+return (
+  <CurrentUserContext.Provider value={currentUser}>
     <div className="App page" >
       <Header/>
       <Main
+        cards={cards}
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
@@ -56,7 +75,8 @@ const closePopups = () => {
         isOpen={isEditAvatarPopupOpen}
         onClose={closePopups}/>
     </div>
-  );
+  </CurrentUserContext.Provider>
+);
 }
 
 export default App;

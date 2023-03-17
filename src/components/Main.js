@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from "react";
-import api from "../utils/api.js";
+//import React, { useEffect, useState } from "react";
+import { useContext } from "react";
+//import api from "../utils/api.js";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import Card from "./Card.js";
 
-function Main({onCardClick, onEditAvatar, onEditProfile, onAddPlace}) {
-    const[avatar, setAvatar] = useState("");
+function Main({cards, onCardClick, onEditAvatar, onEditProfile, onAddPlace, onCardDelete, onCardLike}) {
+
+  const currentUser = useContext(CurrentUserContext);
+
+    /*const[avatar, setAvatar] = useState("");
     const[userName, setUserName] = useState("");
     const[userActivity, setUserActivity] = useState("");
     const[cards, setCards] = useState([]);
-
-useEffect(() => {
+    */
+/*
+    useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitCards()])
       .then(([userData, cardsData]) => {
         setAvatar(userData.avatar);
@@ -18,21 +24,22 @@ useEffect(() => {
       })
       .catch((err) => {console.log(err);});
 },[]);
+*/
 
   return(
     <main className="content page__content">
             <section className="profile content__section">
                 <div className="profile__box">
                     <div className="profile__avatar-box">
-                        <img src={avatar} className="profile__avatar" alt="Аватарка"/>
+                        <img src={`${currentUser.avatar}`} className="profile__avatar" alt="Аватарка"/>
                         <button onClick = {onEditAvatar}className="profile__avatar-btn">
                         </button>
                     </div>
                         <div className="profile__user-box">
-                        <h1 className="profile__user-name">{userName}</h1>
+                        <h1 className="profile__user-name">{currentUser.name}</h1>
                         <button onClick = {onEditProfile}
                         className="button profile__edit-btn" type="button"></button>
-                            <p className="profile__user-activity">{userActivity}</p>
+                            <p className="profile__user-activity">{currentUser.about}</p>
                         </div>
                     <button onClick = {onAddPlace}
                     className="button profile__add-btn" type="button"></button>
@@ -46,7 +53,9 @@ useEffect(() => {
                     card={card}
                     name={card.name}
                     link={card.link}
-                    rey={card._id}
+                    key={card._id}
+                    onCardDelete={onCardDelete}
+                    onCardLike={onCardLike}
                   />
                 );
               })}
