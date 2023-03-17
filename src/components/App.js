@@ -15,6 +15,7 @@ import api from '../utils/api.js';
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [isEditProfilePopupChanging, setIsEditProfilePopupChanging] = useState(false);
 
     const[isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const[isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -44,13 +45,31 @@ function App() {
       setCreateCard(card);
     };
 
+  // Обрабатываем клик по лайку
     function handleCardLike(card) {
       const isLiked = card.likes.some((i) => i._id === currentUser._id);
       api.changeLikeStatus(card._id, !isLiked).then((newCard) => {
         setCards((state) => state.map((i) => (i._id === card._id ? newCard : i)));
       });
     }
+  //удаление карточки 
+    const handleCardDel = (card) => {
+      api.deleteCard(card._id).then(() => {
+        setCards((state) => state.filter((i) => i._id !== card._id));
+      });
+    };
 
+  //Обновляем информацию пользователя
+    const upDateUserInfo = (data) => {
+      setIsEditProfilePopupChanging(true);
+      api.addInfo(data)
+      .then((newData) => {setCurrentUser(newData);})
+      .then(() => {closePopups();})
+      .catch((err) => {console.log(err);})
+      .finally(() => {setIsEditProfilePopupChanging(false);})
+    }
+
+// закрываем попапы
 const closePopups = () => {
     console.log('closePopups');
     setIsEditProfilePopupOpen(false);
@@ -70,11 +89,14 @@ return (
         onEditAvatar={handleEditAvatarClick}
         onCardClick={handleCardClick}
         onCardLike = {handleCardLike}
+        onCardDelete={handleCardDel}
       />
       <Footer/>
       <PopupEditProfile
       isOpen={isEditProfilePopupOpen}
-      onClose={closePopups}/>
+      onClose={closePopups}
+      onSaveing={isEditProfilePopupChanging}
+      onUseUpdates={upDateUserInfo}/>
       <PopupNewCardAdd
       isOpen={isAddPlacePopupOpen}
       onClose={closePopups}/>
