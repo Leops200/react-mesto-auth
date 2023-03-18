@@ -1,13 +1,28 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import PopupWithForm from "./PopupWithForm.js";
 
-function PopupNewCardAdd({isOpen, onClose}){
+function PopupNewCardAdd({isOpen, onClose, onSaving, onAddCard}){
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
+
+  function handleAddCardName(e) {setName(e.target.value);};
+
+  function handleAddLink(e) {setLink(e.target.value);};
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onAddCard({name, link});
+  };
+
+  useEffect(() => {setName(""); setLink("");},[]);
+
   return(
     <PopupWithForm
     isOpen={isOpen} onClose={onClose}
     name='add'
     title='Новое место'
-    buttonText='Создать'>
+    buttonText={onSaving ? "Создание..." : 'Создать'}
+    onSubmit={handleSubmit}>
       <input 
       className="popup__form-input popup__form-input_place-name"
       type="text"
@@ -15,6 +30,7 @@ function PopupNewCardAdd({isOpen, onClose}){
       placeholder="Название"
       name="name"
       required
+      onChange={handleAddCardName}
       />
       <span className="popup__form-inpt-err place-name-error" id="place-name-error">
       </span>
@@ -24,6 +40,7 @@ function PopupNewCardAdd({isOpen, onClose}){
       placeholder="Ваша ссылка"
       name="link"
       required
+      onChange={handleAddLink}
       />
       <span className="popup__form-inpt-err url-inpt-error" id="url-inpt-error"></span>
     </PopupWithForm>

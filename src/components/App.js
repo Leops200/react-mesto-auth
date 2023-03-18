@@ -17,6 +17,7 @@ function App() {
   const [cards, setCards] = useState([]);
   const [isEditProfilePopupChanging, setIsEditProfilePopupChanging] = useState(false);
   const [isEditAvatarPopupChanging, setIsEditAvatarPopupChanging] = useState(false);
+  const [isAddPlacePopupChanging, setIsAddPlacePopupChanging] = useState(false);
 
     const[isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const[isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -79,6 +80,15 @@ function App() {
         .finally(() => {setIsEditAvatarPopupChanging(false);})
     };
 
+    const handleAddCardSubmit = (data) => {
+      setIsAddPlacePopupChanging(true)
+      api.addNewCard(data)
+        .then((newData) => {setCards([newData, ...cards]);})
+        .then(() => {closePopups();})
+        .catch((err) => {console.log(err);})
+        .finally(() => {setIsAddPlacePopupChanging(false);})
+    }
+
 // закрываем попапы
 const closePopups = () => {
     console.log('closePopups');
@@ -109,7 +119,9 @@ return (
       onUseUpdates={updateUserInfo}/>
       <PopupNewCardAdd
       isOpen={isAddPlacePopupOpen}
-      onClose={closePopups}/>
+      onClose={closePopups}
+      onSaving={isAddPlacePopupChanging}
+      onAddCard={handleAddCardSubmit}/>
       <ImagePopup card={createCard} onClose={closePopups}/>
         <PopupChangeAvatar
         isOpen={isEditAvatarPopupOpen}
