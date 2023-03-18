@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import Footer from './Footer.js';
 import Header from './Header.js';
 import Main from './Main.js';
-import PopupEditProfile from './PopupEditProfile.js';
-import PopupChangeAvatar from './PopupChangeAvatar.js';
-import PopupNewCardAdd from './PopupNewCardAdd.js';
+import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarPopup from './EditAvatarPopup.js';
+import AddPlacePopup from './AddPlacePopup.js';
 import ImagePopup from './ImagePopup.js';
 
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
@@ -112,18 +112,18 @@ return (
         onCardDelete={handleCardDel}
       />
       <Footer/>
-      <PopupEditProfile
+      <EditProfilePopup
       isOpen={isEditProfilePopupOpen}
       onClose={closePopups}
       onSaving={isEditProfilePopupChanging}
       onUseUpdates={updateUserInfo}/>
-      <PopupNewCardAdd
+      <AddPlacePopup
       isOpen={isAddPlacePopupOpen}
       onClose={closePopups}
       onSaving={isAddPlacePopupChanging}
       onAddCard={handleAddCardSubmit}/>
       <ImagePopup card={createCard} onClose={closePopups}/>
-        <PopupChangeAvatar
+        <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
         onClose={closePopups}
         onSaving={isEditAvatarPopupChanging}
