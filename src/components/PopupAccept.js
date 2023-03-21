@@ -1,20 +1,21 @@
 import React from "react";
+import PopupWithForm from "./PopupWithForm";
 
-function PopupAccept() {
-  return(
-    <div className="popup popup_accept">
-            <div className="popup__container">
-                <button className="button popup__close-btn popup__close-btn_accept"></button>
-                <h2 className="popup__title">Вы уверены?</h2>
-                <form
-                 className="popup__form popup__form-accept"
-                 id="form-accept"
-                 name="accept"
-                 novalidate>
-                 <button className="button popup__form-btn-save">Да</button>
-                </form>
-            </div>
-        </div>
+function PopupAccept({ isOpen, onClose, onSaving, onDeleteCard, card }) {
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onDeleteCard(card);
+  }
+
+  return (
+    <PopupWithForm
+      isOpen={isOpen} onClose={onClose}
+      name="popup popup_accept"
+      title="Вы уверены?"
+      buttonText={onSaving ? "Удаление..." : "Да"}
+      onSubmit={handleSubmit}>
+    </PopupWithForm>
   )
 };
 

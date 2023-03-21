@@ -1,9 +1,9 @@
 //import React from "react";
-import { useState, useContext, useEffect} from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import PopupWithForm from './PopupWithForm.js';
 
-function PopupEditProfile({isOpen, onClose, onSaving, onUseUpdates}) {
+function PopupEditProfile({ isOpen, onClose, onSaving, onUseUpdates }) {
   const currentUser = useContext(CurrentUserContext);
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
@@ -11,7 +11,7 @@ function PopupEditProfile({isOpen, onClose, onSaving, onUseUpdates}) {
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   // Ввод имени
   function handleChangeName(e) {
@@ -28,38 +28,42 @@ function PopupEditProfile({isOpen, onClose, onSaving, onUseUpdates}) {
   function handleSubmit(e) {
     e.preventDefault();
     console.log('submit!');
-    onUseUpdates({name, about: description});
+    onUseUpdates({ name, about: description });
   }
 
-  return(
+  return (
     <PopupWithForm
-    isOpen={isOpen}
-    onClose={onClose}
-    name='edit'
-    title='Редактировать профиль'
-    buttonText={onSaving ? 'Сохранение...' : 'Сохранить'}
-    onSubmit={handleSubmit}>
+      isOpen={isOpen}
+      onClose={onClose}
+      name='edit'
+      title='Редактировать профиль'
+      buttonText={onSaving ? 'Сохранение...' : 'Сохранить'}
+      onSubmit={handleSubmit}>
       <input
-      className="popup__form-input popup__form-input_other-name"
-      id="name-input"
-      type="text"
-      name="name"
-      placeholder="Ваше имя"
-      onChange={handleChangeName}
-      required/>
+        className="popup__form-input popup__form-input_other-name"
+        id="name-input"
+        type="text"
+        name="name"
+        placeholder="Ваше имя"
+        onChange={handleChangeName}
+        required
+        value={name || ""}
+      />
       <span className="name-input-error popup__form-inpt-err name-inpt-err"
-      id="name-error"></span>
+        id="name-error"></span>
       <input
-      className="popup__form-input popup__form-input_other-about"
-      id="about-input"
-      type="text"
-      name="about"
-      placeholder="О себе"
-      onChange={handleChangeDescription}
-      required/>
+        className="popup__form-input popup__form-input_other-about"
+        id="about-input"
+        type="text"
+        name="about"
+        placeholder="О себе"
+        onChange={handleChangeDescription}
+        required
+        value={description || ""}
+      />
       <span className="popup__form-inpt-err about-input-error"
-      id="about-error"></span>
-    </PopupWithForm> 
+        id="about-error"></span>
+    </PopupWithForm>
   )
 };
 

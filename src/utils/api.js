@@ -14,18 +14,18 @@ class Api {
     return res.json();
 }
 
-_refund(url, options) {
+_makeRequest(url, options) {
   return fetch(url, options).then(this._checkRes)
 }
 
   getInitCards() {
-    return this._refund(`${this._baseUrl}/cards`, {
+    return this._makeRequest(`${this._baseUrl}/cards`, {
       headers: this._headers
     });
   }
 
   getUserInfo() {
-    return this._refund(`${this._baseUrl}/users/me`, {
+    return this._makeRequest(`${this._baseUrl}/users/me`, {
       headers: this._headers
     });
   }
@@ -33,7 +33,7 @@ _refund(url, options) {
   addAvatar(data) {
     console.log('avatar data:');
     console.log(data);
-    return this._refund(`${this._baseUrl}/users/me/avatar`, {
+    return this._makeRequest(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
@@ -43,7 +43,7 @@ _refund(url, options) {
   };
 
   addInfo(data) {
-    return this._refund(`${this._baseUrl}/users/me`, {
+    return this._makeRequest(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
@@ -55,7 +55,7 @@ _refund(url, options) {
   
   //добавляем карточку
   addNewCard(data) {
-    return this._refund(`${this._baseUrl}/cards`, {
+    return this._makeRequest(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({
@@ -66,21 +66,21 @@ _refund(url, options) {
   };
 
   deleteCard(id) {
-    return this._refund(`${this._baseUrl}/cards/${id}`, {
+    return this._makeRequest(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this._headers
     })
   };
 /*
   addCardLike(cardId) {
-    return this._refund(`${this._baseUrl}/cards/${cardId}/likes`, {
+    return this._makeRequest(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "PUT",
       headers: this._headers
     })
   };
 
   deleteCardLike(data) {
-    return this._refund(`${this._baseUrl}/cards/${data}/likes`, {
+    return this._makeRequest(`${this._baseUrl}/cards/${data}/likes`, {
       method: "DELETE",
       headers: this._headers
     })
@@ -89,12 +89,12 @@ _refund(url, options) {
   // объединим функции добавления и удаления лайка (addCardLike, deleteCardLike)
   changeLikeStatus(id, isLiked) {
     if (isLiked) {
-      return this._refund(`${this._baseUrl}/cards/${id}/likes`, {
+      return this._makeRequest(`${this._baseUrl}/cards/${id}/likes`, {
         headers: this._headers,
           method: "PUT",
       });
     } else {
-      return this._refund(`${this._baseUrl}/cards/${id}/likes`, {
+      return this._makeRequest(`${this._baseUrl}/cards/${id}/likes`, {
         headers: this._headers,
         method: "DELETE",
       });
