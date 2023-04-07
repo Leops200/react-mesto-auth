@@ -1,6 +1,4 @@
-/*
-Уважаемый Ревьюер, прошу прощения, что отправил недоделанную работу. Я работю над ней, но чт-то не успел, а что-то уже поломалось(((. Стараюсь, очень. Но, пока не получается..
-*/
+
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 
