@@ -167,10 +167,14 @@ function App() {
   const onLogin = useCallback(async (email, password) => {
     try {
       const data = await auth.login(email, password);
-      navigate("/", { replace: true });
-      setIsInfoTooltipOpen(true);
-      setInfoTooltipStatus("ok");
-      console.log("логин == ок");
+      if (data.token) {
+        localStorage.setItem("jwt", data.token);
+        setIsLoggedIn(true);
+        navigate("/", { replace: true });
+        setIsInfoTooltipOpen(false);
+        setInfoTooltipStatus("ok");
+        console.log("логин == ок");
+      }
     } catch (err) {
       console.log(err);
       setIsInfoTooltipOpen(true);
@@ -180,49 +184,52 @@ function App() {
   );
 
   const onRegister = useCallback(async (email, password) => {
-    
+
     try {
       const data = await auth
-        .registration(email,password);
-      //authIdent(data);
-      setIsInfoTooltipOpen(true)
-      setInfoTooltipStatus("ok")
-      navigate("/sign-in", { replace: true });
+        .registration(email, password);
+      if (data) {
+        setIsInfoTooltipOpen(true)
+        setInfoTooltipStatus("ok")
+        navigate("/sign-in", { replace: true });
+      };
     } catch (err) {
       console.log(err + "fail!!((");
       setInfoTooltipStatus("not-ok");
       setIsInfoTooltipOpen(true)
     } finally {
-console.log("Была попытка регистрации");
+      console.log("Была попытка регистрации");
     }
   }, [navigate]);
 
   const infoTooltipOpen = () => {
-authIdent(true);
-    console.log( setInfoTooltipStatus );
+    authIdent(true);
+    console.log(setInfoTooltipStatus);
   }
 
   const isTokenCheck = useCallback(async () => {
-    localStorage.removeItem("jwt");
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
+    //после отладки удалить!
+    //localStorage.removeItem("jwt");
+    const token = localStorage.getItem("jwt");
+    if (token) {
       try {
-        const user = await auth.checkToken(jwt);
+        const user = await auth.checkToken(token);
         if (!user) {
           throw console.log("invalid userData");
         }
         setIsLoggedIn(true);
         setMailName(user.data.email);
-        navigate("/", {replace: true});}
+        navigate("/", { replace: true });
+      }
       catch (err) { console.log(err) }
       finally { console.log("check token"); }
-    } 
-    else{
+    }
+    else {
       console.log("jwt invalid !")
     }
-  })
+  }, [navigate]);
 
-  useEffect(() => {isTokenCheck();}, []);
+  useEffect(() => { isTokenCheck(); }, []);
 
   const onSignOut = useCallback(() => {
     localStorage.removeItem("jwt");
@@ -261,21 +268,23 @@ authIdent(true);
           <Route
             path='/'
             element={
-              <>
-                <ProtectedRouteElement exact path="/" isLogged={isLogged}>
-                  <Main
-                    cards={cards}
-                    onEditProfile={handleEditProfileClick}
-                    onAddPlace={handleAddPlaceClick}
-                    onEditAvatar={handleEditAvatarClick}
-                    onCardClick={handleCardClick}
-                    onCardLike={handleCardLike}
-                    onCardDelete={handleCardDelClick}
-                  />
-                  <Footer />
-                </ProtectedRouteElement>
-              </>
+              <ProtectedRouteElement
+                element={Main}
+                cards={cards}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelClick}
+                isLogged={isLogged}
+              />
             }
+          />
+          <Route
+            index
+            element={Main}
+            cards={cards}
           />
         </Routes>
 
