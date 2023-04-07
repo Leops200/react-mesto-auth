@@ -34,7 +34,7 @@ function App() {
   const [isAcceptPopupChanging, setAcceptPopupButtonText] = useState(false);
   const [cardDel, setCardDel] = useState({});
   const [selectedCard, setSelectedCard] = useState({});
-  const [mailName, setMailName] = useState(null);
+  const [mailName, setMailName] = useState("");
   const navigate = useNavigate();
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [infoTooltipStatus, setInfoTooltipStatus] = useState("");
@@ -268,23 +268,25 @@ function App() {
           <Route
             path='/'
             element={
-              <ProtectedRouteElement
-                element={Main}
-                cards={cards}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onEditAvatar={handleEditAvatarClick}
-                onCardClick={handleCardClick}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelClick}
-                isLogged={isLogged}
-              />
+              <>
+                <ProtectedRouteElement
+                  element={Main}
+                  cards={cards}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelClick}
+                  isLogged={isLogged}
+                />
+                <Footer />
+              </>
             }
           />
           <Route
             index
             element={Main}
-            cards={cards}
           />
         </Routes>
 
