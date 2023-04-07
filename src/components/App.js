@@ -1,10 +1,8 @@
-/*
-Здравствуйте Геннадий! Прежде всего благодарю Вас за Ревью! Отдельное спасибо Вам за точные и понятные коммертарии к замечаниям. Вообще, спасибо за Ваш труд, он очень важен для новичков, таких, как я. 
-Не нашёл простого решения для закрытия попапа с картинкой клавишей "ESC", если только добавлять "isOpen" этому попапу, но мне показалось это нагромождением... В остальном, постарался исправить все замечания, но не исключаю и того, что мог ещё что-то не так сделать. проверьте меня пожалуйста. 
-   Спасибо. Жду новых замечаний)
-*/
-import { useState, useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
 
+import Login from './Login.js';
+import Register from './Register.js'
 import Footer from './Footer.js';
 import Header from './Header.js';
 import Main from './Main.js';
@@ -16,8 +14,13 @@ import ImagePopup from './ImagePopup.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from '../utils/api.js';
 import PopupAccept from './PopupAccept.js';
+import * as auth from '../utils/auth.js';
+import ProtectedRouteElement from "./ProtectedRoute.js";
+import InfoTooltip from "./InfoTooltip.js";
+
 
 function App() {
+  const [isLogged, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isEditProfilePopupChanging, setIsEditProfilePopupChanging] = useState(false);
@@ -31,17 +34,24 @@ function App() {
   const [isAcceptPopupChanging, setAcceptPopupButtonText] = useState(false);
   const [cardDel, setCardDel] = useState({});
   const [selectedCard, setSelectedCard] = useState({});
+  const [mailName, setMailName] = useState(null);
+  const navigate = useNavigate();
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [infoTooltipStatus, setInfoTooltipStatus] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitCards()])
-      .then(([userData, cardsData]) => {
-        setCurrentUser(userData);
-        //setUserName(userData.name);
-        //setUserActivity(userData.about);
-        setCards(cardsData);
-      })
-      .catch((err) => { console.log(err); });
-  }, []);
+    isLogged &&
+      Promise.all([api.getUserInfo(), api.getInitCards()])
+        .then(([userData, cardsData]) => {
+          setCurrentUser(userData);
+          //setUserName(userData.name);
+          //setUserActivity(userData.about);
+          setCards(cardsData);
+        })
+        .catch((err) => { console.log(err); })
+        .finally(() => { console.log("loading promise") });
+  }, [isLogged]);
 
   const handleEditProfileClick = () => { setIsEditProfilePopupOpen(true); };
 
@@ -116,8 +126,8 @@ function App() {
       .finally(() => { setIsAddPlacePopupChanging(false); })
   }
 
-  // Закрытие по ESC
 
+  // Закрытие по ESC
   const isOpen = isAcceptPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen
 
   useEffect(() => {
@@ -134,29 +144,141 @@ function App() {
   }, [isOpen]);
 
   // закрываем попапы
-  const closePopups = () => {
+  const closePopups = useCallback(() => {
     console.log('closePopups');
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsAcceptPopupOpen(false);
+    setIsInfoTooltipOpen(false);
+    setInfoTooltipStatus("");
     setSelectedCard({});
+  }, []);
+
+  const authIdent = useCallback((data) => {
+    if (data.jwt) {
+      localStorage.setItem("jwt", data.jwt);
+      setIsLoggedIn(true);
+      setMailName(data.email);
+    }
+    if (!data) throw console.log("invalid data")
+  }, []);
+
+  const onLogin = useCallback(async (email, password) => {
+    try {
+      const data = await auth.login(email, password);
+      navigate("/", { replace: true });
+      setIsInfoTooltipOpen(true);
+      setInfoTooltipStatus("ok");
+      console.log("логин == ок");
+    } catch (err) {
+      console.log(err);
+      setIsInfoTooltipOpen(true);
+      setInfoTooltipStatus("not-ok");
+    } finally { console.log("попытка залогиниться") }
+  }, [navigate]
+  );
+
+  const onRegister = useCallback(async (email, password) => {
+    
+    try {
+      const data = await auth
+        .registration(email,password);
+      //authIdent(data);
+      setIsInfoTooltipOpen(true)
+      setInfoTooltipStatus("ok")
+      navigate("/sign-in", { replace: true });
+    } catch (err) {
+      console.log(err + "fail!!((");
+      setInfoTooltipStatus("not-ok");
+      setIsInfoTooltipOpen(true)
+    } finally {
+console.log("Была попытка регистрации");
+    }
+  }, [navigate]);
+
+  const infoTooltipOpen = () => {
+authIdent(true);
+    console.log( setInfoTooltipStatus );
   }
 
+  const isTokenCheck = useCallback(async () => {
+    localStorage.removeItem("jwt");
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      try {
+        const user = await auth.checkToken(jwt);
+        if (!user) {
+          throw console.log("invalid userData");
+        }
+        setIsLoggedIn(true);
+        setMailName(user.data.email);
+        navigate("/", {replace: true});}
+      catch (err) { console.log(err) }
+      finally { console.log("check token"); }
+    } 
+    else{
+      console.log("jwt invalid !")
+    }
+  })
+
+  useEffect(() => {isTokenCheck();}, []);
+
+  const onSignOut = useCallback(() => {
+    localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+    setMailName("");
+    navigate("/sign-in", { replace: true });
+  }, [navigate]);
+
   return (
+
     <CurrentUserContext.Provider value={currentUser}>
+
       <div className="App page" >
-        <Header />
-        <Main
-          cards={cards}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelClick}
+        <Header
+          title='Выйти'
+          onLogOut={onSignOut}
+          email={mailName}
+          route='*'
         />
-        <Footer />
+        <Routes>
+          <Route
+            path="/sign-in" element=
+            {
+              <>
+                <Login onLogin={onLogin}
+                  onLoading={isLoading} />
+              </>
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={<Register
+              onRegister={onRegister}
+              infoTooltipOpen={infoTooltipOpen} />}
+          />
+          <Route
+            path='/'
+            element={
+              <>
+                <ProtectedRouteElement exact path="/" isLogged={isLogged}>
+                  <Main
+                    cards={cards}
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddPlaceClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    onCardClick={handleCardClick}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelClick}
+                  />
+                  <Footer />
+                </ProtectedRouteElement>
+              </>
+            }
+          />
+        </Routes>
+
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closePopups}
@@ -185,6 +307,11 @@ function App() {
           onDeleteCard={handleCardDel}
           onSaving={isAcceptPopupChanging}
           card={cardDel}
+        />
+        <InfoTooltip
+          isStatus={infoTooltipStatus}
+          isOpen={isInfoTooltipOpen}
+          onClose={closePopups}
         />
       </div>
     </CurrentUserContext.Provider>

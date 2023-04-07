@@ -4,6 +4,10 @@
   margin: 0 auto 40px;
   max-width: 886px;
   height: 74px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
 }
 
 @media  screen and (max-width: 585px){
