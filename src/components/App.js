@@ -1,4 +1,7 @@
-
+/*
+  Здравствуйте Геннадий. Я прошу прощенья, что отправляю недоделанную работу (у меня не все стили сделаны, а некоторые не до конца, но я по-тихонечку их доделываю... ), думаю у меня будет много ошибок именно в логике , а не в стилях. Вот и хочу поскорее получить замечания , чтобы успеть всё починить и подправить. 
+  Спасибо
+*/
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 
@@ -271,7 +274,7 @@ function App() {
             element={
               <>
                 <ProtectedRouteElement
-                  element={Main}
+                  component={Main}
                   cards={cards}
                   onEditProfile={handleEditProfileClick}
                   onAddPlace={handleAddPlaceClick}
@@ -281,16 +284,11 @@ function App() {
                   onCardDelete={handleCardDelClick}
                   isLogged={isLogged}
                 />
-                <Footer />
               </>
             }
           />
-          <Route
-            index
-            element={Main}
-          />
         </Routes>
-
+        <Footer />
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closePopups}
