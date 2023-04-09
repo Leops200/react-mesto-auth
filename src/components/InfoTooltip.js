@@ -29,7 +29,7 @@ console.log(isStatus);
         <img
           src={toggleImgStatus(isStatus)}
           className="popup__tooltip"
-          alt={""}
+          alt={"Иконка со статусом"}
         />
         <h2 className="popup__tooltip-title">{toggleTextStatus(isStatus)}
         </h2>

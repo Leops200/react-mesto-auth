@@ -14,8 +14,8 @@ function PopupAccept({ isOpen, onClose, onSaving, onDeleteCard, card }) {
       name="popup popup_accept"
       title="Вы уверены?"
       buttonText={onSaving ? "Удаление..." : "Да"}
-      onSubmit={handleSubmit}>
-    </PopupWithForm>
+      onSubmit={handleSubmit}
+    />
   )
 };
 

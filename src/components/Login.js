@@ -1,11 +1,11 @@
 import React from 'react';
-import FormsInput from '../hooks/formsInput.js';
+import useForm from '../hooks/useFormsInputs.js';
 //import { Link, useNavigate } from 'react-router-dom';
 //import * as auth from '../auth';
 
 
 function Login({ onLogin }) {
-  const { values, handleInput } = FormsInput({});
+  const { values, handleInput } = useForm({});
 
 
   function handleSubmit(e) {

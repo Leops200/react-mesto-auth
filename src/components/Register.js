@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import FormsInput from '../hooks/formsInput.js';
+import useForm from '../hooks/useFormsInputs.js';
 
 //import * as auth from '../auth.js';
 
 
 function Register({onRegister}) {
-  const {values, handleInput} = FormsInput();
+  const {values, handleInput} = useForm();
 
   function handleSubmit(e) {
     e.preventDefault();

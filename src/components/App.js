@@ -1,5 +1,5 @@
 /*
-  Здравствуйте Геннадий. Я прошу прощенья, что отправляю недоделанную работу (у меня не все стили сделаны, а некоторые не до конца, но я по-тихонечку их доделываю... ), думаю у меня будет много ошибок именно в логике , а не в стилях. Вот и хочу поскорее получить замечания , чтобы успеть всё починить и подправить. 
+  Здравствуйте Геннадий. Спасибо Вам за очередное прекрасное ревью! Я постарался поправить все критические замечания (Проверьте пожалуйста, действительно ли всё получилось, и работает как-положено?). Отдельное спасибо за пункты "можно лучше"! Если я что-то не поправил сразу, так только от нехватки времени, но сохранил себе все пометочки, при случае - обязательно подправлю.
   Спасибо
 */
 import { Route, Routes, useNavigate } from 'react-router-dom';
@@ -91,6 +91,7 @@ function App() {
     api.deleteCard(card._id)
       .then(() => {
         setCards((state) => state.filter((i) => i._id !== card._id));
+        setCardDel({});
         closePopups();
       })
       .catch((err) => {
@@ -98,7 +99,6 @@ function App() {
       })
       .finally(() => {
         setAcceptPopupButtonText(false);
-        setCardDel({});
       });
   };
 
@@ -177,13 +177,13 @@ function App() {
         navigate("/", { replace: true });
         setIsInfoTooltipOpen(false);
         setInfoTooltipStatus("ok");
-        console.log("логин == ок");
+        setMailName(email.email);
       }
     } catch (err) {
       console.log(err);
       setIsInfoTooltipOpen(true);
       setInfoTooltipStatus("not-ok");
-    } finally { console.log("попытка залогиниться") }
+    } finally { console.log("попытка залогиниться"); }
   }, [navigate]
   );
 
@@ -193,15 +193,14 @@ function App() {
       const data = await auth
         .registration(email, password);
       if (data) {
-        setIsInfoTooltipOpen(true)
         setInfoTooltipStatus("ok")
         navigate("/sign-in", { replace: true });
       };
     } catch (err) {
       console.log(err + "fail!!((");
       setInfoTooltipStatus("not-ok");
-      setIsInfoTooltipOpen(true)
     } finally {
+      setIsInfoTooltipOpen(true)
       console.log("Была попытка регистрации");
     }
   }, [navigate]);
@@ -211,7 +210,7 @@ function App() {
     console.log(setInfoTooltipStatus);
   }
 
-  const isTokenCheck = useCallback(async () => {
+  const checkToken = useCallback(async () => {
     //после отладки удалить!
     //localStorage.removeItem("jwt");
     const token = localStorage.getItem("jwt");
@@ -233,7 +232,7 @@ function App() {
     }
   }, [navigate]);
 
-  useEffect(() => { isTokenCheck(); }, []);
+  useEffect(() => { checkToken(); }, []);
 
   const onSignOut = useCallback(() => {
     localStorage.removeItem("jwt");
@@ -257,10 +256,8 @@ function App() {
           <Route
             path="/sign-in" element=
             {
-              <>
-                <Login onLogin={onLogin}
-                  onLoading={isLoading} />
-              </>
+              <Login onLogin={onLogin}
+                onLoading={isLoading} />
             }
           />
           <Route
@@ -272,19 +269,17 @@ function App() {
           <Route
             path='/'
             element={
-              <>
-                <ProtectedRouteElement
-                  component={Main}
-                  cards={cards}
-                  onEditProfile={handleEditProfileClick}
-                  onAddPlace={handleAddPlaceClick}
-                  onEditAvatar={handleEditAvatarClick}
-                  onCardClick={handleCardClick}
-                  onCardLike={handleCardLike}
-                  onCardDelete={handleCardDelClick}
-                  isLogged={isLogged}
-                />
-              </>
+              <ProtectedRouteElement
+                component={Main}
+                cards={cards}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelClick}
+                isLogged={isLogged}
+              />
             }
           />
         </Routes>

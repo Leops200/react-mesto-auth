@@ -14,7 +14,7 @@ function NavBar({ email, onLogOut }) {
         <Route
           path="/sign-up"
           element={
-            <Link to="/sign-in" className='header__link'>Войти</Link>
+            <Link to="/sign-in" className="header__link">Войти</Link>
           }
           exact
         />
@@ -22,7 +22,7 @@ function NavBar({ email, onLogOut }) {
           path='/'
           element={
             <>
-              <p className='header__user-mail'>{email}</p>
+              <p className="header__user-mail">{email}</p>
               <button
                 className='header__exit'
                 onClick={onLogOut}

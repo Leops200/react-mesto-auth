@@ -1,7 +1,7 @@
 //Пока использую только для нового ввода. Надо распространить для всех компонентов с формой
 import { useCallback, useState } from "react";
 
-function FormsInput() {
+function useForm() {
   const [values, setValues] = useState({});
 
   const handleInput = (event) => {
@@ -18,4 +18,4 @@ function FormsInput() {
   return { values, handleInput, reset };
 }
 
-export default FormsInput;
+export default useForm;
