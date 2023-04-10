@@ -1,6 +1,6 @@
 {
   "homepage": "https://leops200.github.io/react-mesto-auth",
-  "name": "mesto_react",
+  "name": "mesto-react-auth",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
